@@ -540,3 +540,18 @@ func SumDigPow(a, b uint64) []uint64 {
 	//a & b is range
 	return nil
 }
+
+func Rps(p1, p2 string) string {
+	if len(p1) == len(p2) {
+		return "Draw!"
+	}	
+	if p1 == "scissors" && p2 == "paper" {
+		return "Player 1 won!"
+	} else if p1 == "rock" && p2 == "scissors" {
+		return "Player 1 won!"
+	} else if p1 == "paper" && p2 == "rock" {
+		return "Player 1 won!"
+	}
+
+	return "Player 2 won!"
+}
