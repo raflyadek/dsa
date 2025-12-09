@@ -27,9 +27,11 @@ func main() {
 	// fmt.Println(DNAtoRNA("GCAT"))
 	// fmt.Println(Is_valid_ip("127.20.32.84"))
 	// fmt.Println(Score([5]int{5, 5, 5, 2, 1}))
-	var a1 = []int{121, 144, 19, 161, 19, 144, 19, 11}
-	var a2 = []int{11*11, 121*121, 144*144, 19*19, 161*161, 19*19, 144*144, 19*19}
-	fmt.Print(Comp(a1, a2))
+	// var a1 = []int{121, 144, 19, 161, 19, 144, 19, 11}
+	// var a2 = []int{11*11, 121*121, 144*144, 19*19, 161*161, 19*19, 144*144, 19*19}
+	// fmt.Print(Comp(a1, a2))
+	numbers := []int{9, 7, 5, 4, 3, 2}
+	fmt.Println(BubblesortOnce(numbers))
 }
 
 func FindMultiples(integer, limit int) []int {
@@ -554,4 +556,15 @@ func Rps(p1, p2 string) string {
 	}
 
 	return "Player 2 won!"
+}
+
+func BubblesortOnce(numbers []int) []int {
+	n := len(numbers)
+	//compare the first index to second and move it untill it reaches end
+	for i := 0; i < n-1; i++ {
+		if numbers[i] > numbers[i+1] {
+			numbers[i], numbers[i+1] = numbers[i+1], numbers[i]
+		}
+	}
+	return numbers
 }
