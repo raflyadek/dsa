@@ -1,8 +1,10 @@
 package main
 
 import (
+	"cmp"
 	"fmt"
 	"math"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -30,28 +32,146 @@ func main() {
 	// var a1 = []int{121, 144, 19, 161, 19, 144, 19, 11}
 	// var a2 = []int{11*11, 121*121, 144*144, 19*19, 161*161, 19*19, 144*144, 19*19}
 	// fmt.Print(Comp(a1, a2))
-	numbers := []int{9, 7, 5, 4, 3, 2}
-	fmt.Println(BubblesortOnce(numbers))
+	numbers := []int{10, 9, 4, 4, 5, 5, 6}
+	// fmt.Println(CountPositivesSumNegatives(numbers))
+	// fmt.Println(reverseArray(numbers))
+	// fmt.Println(mostFrequentElement(numbers))
+	// fmt.Println(BubblesortOnce(numbers))
+	// fmt.Println(sliceSortNumber(numbers))
+	// people := []Person{
+	// 	{"rafly", 32},
+	// 	{"raka", 21},
+	// 	{"rafly", 41},
+	// 	{"raka", 52},
+	// 	{"luthfi", 11},
+	// }
+
+	// slices.SortFunc(people, cmpPeople)
+
+	// fmt.Println(people)
+	fmt.Println(SortNumbers(numbers))
+	// bubbleSort(numbers)
+	// fmt.Println(numbers)
+	fmt.Println(MoveZeros([]int{1, 0, 3, 2, 0, 3, 4, 0, 0, 2, 0}))
+}
+
+func MoveZeros(arr []int) []int {
+  // TODO: Program me
+  notZero := 0 
+  for i := 0; i < len(arr)-1; i++ {
+    if arr[i] != 0 {
+		arr[notZero], arr[i] = arr[i], arr[notZero]
+		notZero++
+	}
+  }
+  return arr
+}
+
+func bubbleSort(arr []int) {
+	n := len(arr)
+	for i := 0; i < n-1; i++ {
+		for j := 0; j < n-i-1; j++ {
+			if arr[j] > arr[j+1] {
+				arr[j], arr[j+1] = arr[j+1], arr[j]
+			}
+		}
+	}
+}
+
+func SortNumbers(numbers []int) []int {
+//   result := make([]int, len(numbers))
+  if numbers == nil {
+    return []int{}
+  }
+  n := len(numbers)
+  for i := 0; i < n-1; i++ {
+    for j := 0; j < n-i-1; j++ {
+      if numbers[j] > numbers[j+1] {
+        numbers[j], numbers[j+1] = numbers[j+1], numbers[j]
+      }
+    }
+  }
+//   slices.Sort(numbers)
+  
+  return numbers // your code here
+}
+
+type Person struct {
+	name string
+	age  int
+}
+
+func cmpPeople(a, b Person) int {
+	if a.name == b.name {
+		return cmp.Compare(a.age, b.age)
+	}
+	return cmp.Compare(a.name, b.name)
+}
+
+func sliceSortNumber(numbers []int) []int {
+	slices.Reverse(numbers)
+	return numbers
+}
+
+func reverseArray(a []int32) []int32 {
+	//make vs var for declaring a slice
+	//make alocate a memory so when the slice is empty it returns []
+	//var doesnt alocate memory so you will get null if its empty
+	var result []int32
+
+	lengthA := len(a) - 1
+	fmt.Println(lengthA)
+	//loop it backwards
+	//the second statements is run until it false,
+	//so if its i < 0 its false from the beginning
+	for i := lengthA; i >= 0; i-- {
+		fmt.Println(i)
+		result = append(result, a[i])
+	}
+
+	return result
+}
+
+func mostFrequentElement(nums []int) int {
+	mapNums := make(map[int]int)
+	result := 0
+	for _, v := range nums {
+		_, ok := mapNums[v]
+		if !ok {
+			mapNums[v] = 1
+		} else {
+			mapNums[v]++
+		}
+	}
+
+	for i, v := range mapNums {
+
+		if v > result {
+			result = i
+		}
+	}
+
+	return result
 }
 
 func FindMultiples(integer, limit int) []int {
-  // Your code here!
-if integer < 1 {
-  return nil
-}
-  
-  if limit < integer {
-    return nil
-  }
+	// Your code here!
+	if integer < 1 {
+		return nil
+	}
 
-//   length := limit/integer
-  result := make([]int, 0)
-  current := integer
-  for current <= limit {
-	result = append(result, current)
-	current += integer
-  }
-  return result
+	if limit < integer {
+		return nil
+	}
+
+	//   length := limit/integer
+	result := make([]int, 0)
+	current := integer
+	for current <= limit {
+		result = append(result, current)
+		current += integer
+	}
+	return result
 }
 
 func RemoveChar(word string) string {
@@ -59,7 +179,7 @@ func RemoveChar(word string) string {
 	// 	return ""
 	// }
 	// result := ""
-	// // lastIndex := len(word) - 1
+	// // notZero := len(word) - 1
 	// // firstIndex := 0
 
 	// length := len(word)
@@ -72,13 +192,13 @@ func RemoveChar(word string) string {
 	// return result
 
 	//solutin 2
-	return word[1:len(word)-1]
-}	
+	return word[1 : len(word)-1]
+}
 
 // func FindMultiples(integer, limit int) []int {
 //   current := integer
 //   nums := make([]int, 0)
-  
+
 //   for current <= limit {
 //     nums = append(nums, current)
 //     current += integer
@@ -120,16 +240,17 @@ func IsPalindrome(str string) bool {
 
 	return true
 }
-//bin to decimal is given [1 1 1 1 1] so the first index binary is 1 the next is 2 and 4 and 8 and 16 and 32 and 64 and etc.. 
-//OR 2^ <- and the lets say its first index/0 <- so its 2^0 = 1 and 2^1 = 2 etc
-//you got the point
-//so the string when we access it via indexing it returns a byte, and that byte lets say 32 
-//32 <- so there are 2 binary and we just multiply it with the binary like the first index is 2^0 * 2 = 2 and 2^1 * 3 = 6 so 6+2 = 8
-//above is false because binary only 0 and 1 so if its 11 == 2^0 * 1 = 1 + 2^1 * 2 = 3 == 3+1 = 4
+
+// bin to decimal is given [1 1 1 1 1] so the first index binary is 1 the next is 2 and 4 and 8 and 16 and 32 and 64 and etc..
+// OR 2^ <- and the lets say its first index/0 <- so its 2^0 = 1 and 2^1 = 2 etc
+// you got the point
+// so the string when we access it via indexing it returns a byte, and that byte lets say 32
+// 32 <- so there are 2 binary and we just multiply it with the binary like the first index is 2^0 * 2 = 2 and 2^1 * 3 = 6 so 6+2 = 8
+// above is false because binary only 0 and 1 so if its 11 == 2^0 * 1 = 1 + 2^1 * 2 = 3 == 3+1 = 4
 func BinToDec(bin string) int {
 	result := 0
 	for i, _ := range bin {
-		//start fro last index because binary start with the last index 
+		//start fro last index because binary start with the last index
 		fromLast := bin[len(bin)-i-1]
 		fromLastStr := string(fromLast)
 		//convert the input to int
@@ -139,7 +260,7 @@ func BinToDec(bin string) int {
 		}
 		//2 power i and then * int from input
 		fromLastIntToDec := (int(math.Pow(2, float64(i)))) * fromLastInt
-		//sum the decimal to the result 
+		//sum the decimal to the result
 		result += fromLastIntToDec
 	}
 
@@ -160,7 +281,7 @@ func NearestSq(n int) int {
 
 	// //for return if below then just the resultfloor but if upper then + 1
 	// below := int(resultFloor * resultFloor)
-	// upper := int((resultFloor + 1) * (resultFloor + 1))  
+	// upper := int((resultFloor + 1) * (resultFloor + 1))
 	// //if decimal < 0.5 then do
 	// if math.Abs(decimal) < 0.5 {
 	// 	return below
@@ -168,20 +289,19 @@ func NearestSq(n int) int {
 	// 	return upper
 	// }
 
-	//solution 2 yeah its so much better than floor it is round it the nearest integer 
+	//solution 2 yeah its so much better than floor it is round it the nearest integer
 	result := math.Round(math.Sqrt(float64(n)))
 	//if the decimal is below .5 then resultFloor else resultFloor+1
 	return int(result * result)
 }
 
-
 func HowMuchILoveYou(i int) string {
-  	if i < 0 {
-  		return ""
+	if i < 0 {
+		return ""
 	}
 	result := [6]string{"I love you", "a little", "a lot", "passionately", "madly", "not at all"}
 	// length := len(result)
-  	return result[(i - 1) % 6]
+	return result[(i-1)%6]
 }
 
 func NumberToString(n int) string {
@@ -190,18 +310,18 @@ func NumberToString(n int) string {
 }
 
 func CheckForFactor(base int, factor int) bool {
-    if base % factor != 0 {
+	if base%factor != 0 {
 		return false
 	}
 
 	return true
 }
 
-func GetGrade(a,b,c int) rune {
+func GetGrade(a, b, c int) rune {
 	averageGrade := (a + b + c) / 3
 	fmt.Println(averageGrade)
 
-    switch {
+	switch {
 	case averageGrade >= 90:
 		return 'A'
 	case averageGrade >= 80:
@@ -222,13 +342,13 @@ func Past(h, m, s int) int {
 	// result := s + m + h
 	// return result
 
-	//solution 2 leverage the return 
+	//solution 2 leverage the return
 	return (h*3600000 + m*60000 + s*1000)
 }
 
 func TwoSort(arr []string) string {
 	result := ""
-	
+
 	// slices.Sort(arr)
 	// sort := arr[0]
 	// for _, v := range sort {
@@ -242,20 +362,20 @@ func TwoSort(arr []string) string {
 		if i == len(sortt)-1 {
 			result += string(v)
 		} else {
-			result += string(v) + "***"	
+			result += string(v) + "***"
 		}
 	}
 	return result
 }
 
 func Accum(s string) string {
-    // your code
+	// your code
 	result := ""
 	//so if there is inner loop and outer loop / 2loop
-	//the i is already increment after it loop 
+	//the i is already increment after it loop
 	for i := 0; i < len(s); i++ {
 		result += strings.ToUpper(string(s[i]))
-		for j := 0; j < i ; j++ {
+		for j := 0; j < i; j++ {
 			result += strings.ToLower(string(s[i]))
 		}
 		if i != len(s)-1 {
@@ -270,12 +390,12 @@ func ReverseWords(str string) string {
 	runes := []rune(str)
 	result := ""
 	words := ""
-	
+
 	for i := 0; i < len(runes); i++ {
 		if runes[i] != ' ' {
 			words += string(runes[i])
 		} else {
-			for j := len(words)-1; j >= 0; j-- {
+			for j := len(words) - 1; j >= 0; j-- {
 				result += string(words[j])
 			}
 			//empty the words
@@ -285,7 +405,7 @@ func ReverseWords(str string) string {
 	}
 
 	if len(words) > 0 {
-		for i := len(words)-1; i >= 0; i-- {
+		for i := len(words) - 1; i >= 0; i-- {
 			result += string(words[i])
 		}
 	}
@@ -293,7 +413,7 @@ func ReverseWords(str string) string {
 
 	// words := strings.Fields(str)
 	// result := []string{}
-	
+
 	// for _, v := range words {
 	// 	runes := []rune(v)
 	// 	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
@@ -305,7 +425,7 @@ func ReverseWords(str string) string {
 	// return strings.Join(result, " ")
 }
 
-func AbbrevName(name string) string{
+func AbbrevName(name string) string {
 	result := ""
 	//your code here
 	//Rafly Ade  -> R.A
@@ -324,7 +444,7 @@ func IsValidWalk(walk []rune) bool {
 	if len(walk) != 10 {
 		return false
 	}
-	
+
 	//each walk is a direction in compass 'n' 's' 'e' 'w'
 	if walk[0] == 'e' && walk[len(walk)-1] == 'w' {
 		return true
@@ -348,16 +468,16 @@ func GetCount(str string) (count int) {
 func GetMiddle(s string) string {
 	//Code goes here!
 	//middle if odd is 2 else is 1
-	middle := len(s)/2
-	if len(s) % 2 == 0 {
-		return s[middle-1:middle+1]
+	middle := len(s) / 2
+	if len(s)%2 == 0 {
+		return s[middle-1 : middle+1]
 	} else {
 		return string(s[middle])
 	}
 }
 
 func EvenOrOdd(number int) string {
-	if number % 2 == 0 {
+	if number%2 == 0 {
 		return "Even"
 	} else {
 		return "Odd"
@@ -365,46 +485,46 @@ func EvenOrOdd(number int) string {
 }
 
 func HighAndLow(in string) string {
-    fields := strings.Fields(in)
-    if len(fields) == 0 {
-        return ""
-    }
+	fields := strings.Fields(in)
+	if len(fields) == 0 {
+		return ""
+	}
 	result := ""
 
-    // Convert the first number
-    num, err := strconv.Atoi(fields[0])
-    if err != nil {
-        return ""
-    }
+	// Convert the first number
+	num, err := strconv.Atoi(fields[0])
+	if err != nil {
+		return ""
+	}
 
-    high, low := num, num
+	high, low := num, num
 
-    for _, v := range fields {
-        n, err := strconv.Atoi(v)
-        if err != nil {
-            continue // ignore invalid entries
-        }
+	for _, v := range fields {
+		n, err := strconv.Atoi(v)
+		if err != nil {
+			continue // ignore invalid entries
+		}
 
-        if n > high {
-            high = n
-        }
-        if n < low {
-            low = n
-        }
-    }
+		if n > high {
+			high = n
+		}
+		if n < low {
+			low = n
+		}
+	}
 	highStr := strconv.Itoa(high)
 	lowStr := strconv.Itoa(low)
-	result += highStr +" "+ lowStr
-    return result
+	result += highStr + " " + lowStr
+	return result
 }
 
 func FindShort(s string) int {
 	//your code
 
-	//make input into slice of string 
+	//make input into slice of string
 	fields := strings.Fields(s)
 	sort.Strings(fields)
-	//set result to first index length of fields 
+	//set result to first index length of fields
 	result := len(fields[0])
 
 	for _, v := range fields {
@@ -423,10 +543,10 @@ func FindUniq(arr []float32) float32 {
 
 	//map
 	result := make(map[float32]int)
-	for i := 0; i <len(arr); i++ {
+	for i := 0; i < len(arr); i++ {
 		result[arr[i]]++
 	}
-	
+
 	for i, v := range result {
 		if v == 1 {
 			//return the key if value is 1
@@ -460,11 +580,11 @@ func DNAtoRNA(dna string) string {
 }
 
 func Is_valid_ip(ip string) bool {
-	//split the ip into numerik only 
+	//split the ip into numerik only
 	ipAddr := strings.Split(ip, ".")
-	
+
 	for _, v := range ipAddr {
-		//casting the ip to int 
+		//casting the ip to int
 		ipInt, err := strconv.Atoi(v)
 		if err != nil {
 			return false
@@ -475,7 +595,7 @@ func Is_valid_ip(ip string) bool {
 			return false
 		}
 	}
-	
+
 	return true
 }
 
@@ -485,16 +605,16 @@ func Score(dice [5]int) int {
 	for _, v := range dice {
 		scoreMap[v]++
 	}
-	
+
 	for i, v := range scoreMap {
-		//if v >= 3 and after that v - 3 because if there are leftovers it still count 
+		//if v >= 3 and after that v - 3 because if there are leftovers it still count
 		if i == 1 && v >= 3 {
 			result += 1000
 			v = v - 3
 		}
-		//if v >= 3 and after that v - 3 because if there are leftovers it still count 
+		//if v >= 3 and after that v - 3 because if there are leftovers it still count
 		if v >= 3 {
-			result += i * 100 
+			result += i * 100
 			v = v - 3
 		}
 		if i == 1 && v < 3 {
@@ -518,7 +638,7 @@ func Comp(array1 []int, array2 []int) bool {
 		return false
 	}
 
-    // your code
+	// your code
 	//square array1
 	squares1 := make([]int, len(array1))
 	for i, v := range array1 {
@@ -546,7 +666,7 @@ func SumDigPow(a, b uint64) []uint64 {
 func Rps(p1, p2 string) string {
 	if len(p1) == len(p2) {
 		return "Draw!"
-	}	
+	}
 	if p1 == "scissors" && p2 == "paper" {
 		return "Player 1 won!"
 	} else if p1 == "rock" && p2 == "scissors" {
